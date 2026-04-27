@@ -1,0 +1,84 @@
+/* --- Base AR View Layout --- */
+.ar-root {
+    flex-grow: 1;
+    justify-content: space-between;
+}
+
+.ar-top-bar {
+    align-items: center;
+}
+
+/* Machine Name - Keep white with a subtle text shadow for AR visibility */
+.ar-machine-name {
+    color: #F5F5F5; 
+    -unity-text-align: middle-center;
+    font-size: 20px;
+    -unity-font-style: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.ar-center {
+    flex-grow: 1; /* Pushes the bottom container down */
+}
+
+/* --- Clear Bottom Container --- */
+.ar-bottom-container {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end; /* Anchors the vertical columns to the bottom */
+    background-color: transparent; /* Completely clear for camera feed */
+    padding: 4%; /* Responsive padding from screen edges */
+}
+
+/* --- Stacked Button Groups --- */
+.ar-side-btns {
+    flex-direction: column; /* Stacks buttons on top of each other */
+    justify-content: flex-end;
+}
+
+.ar-left-btns { align-items: flex-start; }
+.ar-right-btns { align-items: flex-end; }
+
+/* --- Circular Button Styling (Light Theme for Dark Contrast) --- */
+.ar-btn {
+    width: 75px; /* Large touch target for mobile/tablets */
+    height: 75px;
+    margin-top: 15px; /* Spacing between stacked buttons */
+    border-radius: 50%; /* Forces a perfect circle */
+    background-color: rgba(245, 245, 245, 0.90); /* Off-white, slightly translucent */
+    color: #1E1E1E; /* Dark text on white button */
+    border-width: 2px;
+    border-color: rgba(30, 30, 30, 0.3); /* Subtle dark rim */
+    font-size: 14px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    white-space: normal; /* Allows text to break lines */
+    transition-duration: 0.2s;
+}
+
+.ar-btn:hover { background-color: #FFFFFF; }
+.ar-btn:active { background-color: #D3D3D3; }
+
+/* Top bar buttons can be slightly smaller circles */
+.top-btn {
+    width: 50px;
+    height: 50px;
+    margin: 0;
+    font-size: 18px;
+}
+
+/* Overlay button with icon */
+.overlay-btn {
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+}
+
+.ar-overlay-icon {
+    width: 50%;
+    height: 50%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    -unity-background-image-tint-color: #1E1E1E; /* Tints your white cube icon to be dark so it shows up on the white button */
+}

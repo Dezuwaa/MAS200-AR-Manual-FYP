@@ -1,0 +1,56 @@
+/* Root Container */
+#root {
+    flex-grow: 1;
+    justify-content: space-between;
+    align-items: center;
+
+    background-color: rgb(35, 37, 40); /* Dark gray */
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+/* Instruction Text */
+#instructionText {
+    font-size: 20px;
+    -unity-font-style: bold;
+    color: rgb(220, 220, 220);
+
+    -unity-text-align: middle-center;
+    margin-bottom: 20px;
+}
+
+/* Scan Frame Container (Centering helper) */
+#scanFrameContainer {
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Scan Frame Box */
+#scanFrame {
+    width: 60%;
+    height: 40%;
+
+    border-top-width: 4px;
+    border-bottom-width: 4px;
+    border-left-width: 4px;
+    border-right-width: 4px;
+
+    border-top-color: rgb(187, 194, 233);   /* Midnight Blue */
+    border-bottom-color: rgb(187, 194, 233);
+    border-left-color: rgb(187, 194, 233);
+    border-right-color: rgb(187, 194, 233);
+
+    border-radius: 10px;
+
+    background-color: rgba(0, 0, 0, 0); /* Transparent */
+}
+
+/* Status Text */
+#statusText {
+    font-size: 18px;
+    color: rgb(180, 180, 180);
+
+    -unity-text-align: middle-center;
+    margin-top: 20px;
+}

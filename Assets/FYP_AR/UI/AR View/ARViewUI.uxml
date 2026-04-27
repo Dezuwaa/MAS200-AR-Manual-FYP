@@ -1,0 +1,24 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/FYP_AR/UI/AR%20View/ARViewUI.uss?fileID=7433441132597879392&amp;guid=8cdba0cdb44e7a84fa053bcef55941b7&amp;type=3#ARViewUI"/>
+    <Style src="project://database/Assets/FYP_AR/UI/GlobalStyle.uss?fileID=7433441132597879392&amp;guid=fce3a2d49f82bb44598cbf967edb6bb6&amp;type=3#GlobalStyle"/>
+    <ui:VisualElement name="root" class="ar-root">
+        <ui:VisualElement name="topBar" class="ar-top-bar" style="flex-grow: 0; margin: 2%; flex-direction: row; justify-content: space-between;">
+            <ui:Button text="⏎" name="backButton" class="ar-btn top-btn"/>
+            <ui:Label text="MAS200 Base Supply" name="machineName" class="ar-machine-name"/>
+            <ui:Button text="?" name="helpButton" class="ar-btn top-btn"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="centerContainer" class="ar-center"/>
+        <ui:VisualElement name="bottomContainer" class="ar-bottom-container">
+            <ui:VisualElement class="ar-side-btns ar-left-btns">
+                <ui:Button text="Op&#10;Man" name="operationManual" class="ar-btn"/>
+                <ui:Button text="Index" name="indexSearch" class="ar-btn"/>
+            </ui:VisualElement>
+            <ui:VisualElement class="ar-side-btns ar-right-btns">
+                <ui:Button text="Label" name="toggleLabel" class="ar-btn"/>
+                <ui:Button text="" name="toggleOverlay" class="ar-btn overlay-btn">
+                    <ui:VisualElement name="overlayIcon" class="ar-overlay-icon" style="background-image: url(&quot;project://database/Assets/FYP_AR/UI/UI%20Assets/cube_icon.png?fileID=2800000&amp;guid=6c246b7a710f1c24fbc0ef857ad0ef7a&amp;type=3#cube_icon&quot;);"/>
+                </ui:Button>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

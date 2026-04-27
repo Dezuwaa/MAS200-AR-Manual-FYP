@@ -1,0 +1,10 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/FYP_AR/UI/Scan/ScanUI.uss?fileID=7433441132597879392&amp;guid=74dc6fc435354184ca199aad3dcfd2c5&amp;type=3#ScanUI"/>
+    <ui:VisualElement name="root" style="background-color: rgba(35, 37, 40, 0);">
+        <ui:VisualElement name="scanFrameContainer" style="width: auto;">
+            <ui:Label name="instructionText" text="Align your camera with the reference image" style="font-size: 35%; margin-bottom: 20px;"/>
+            <ui:VisualElement name="scanFrame" style="aspect-ratio: 1; height: 40%; width: 60%; max-width: 500px; max-height: 500px;"/>
+            <ui:Label name="statusText" text="Scanning..." style="font-size: 30%; -unity-font-style: bold; color: rgb(255, 255, 255);"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

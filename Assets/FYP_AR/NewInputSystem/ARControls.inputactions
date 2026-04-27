@@ -1,0 +1,55 @@
+{
+    "version": 1,
+    "name": "ARControls",
+    "maps": [
+        {
+            "name": "Touch",
+            "id": "6c9ea406-fd8d-414d-a067-ae4cccf61830",
+            "actions": [
+                {
+                    "name": "Tap",
+                    "type": "Button",
+                    "id": "55e40fda-d2a5-47cc-a6c1-2282d9250e59",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Back",
+                    "type": "Button",
+                    "id": "932163da-774a-4f01-8507-3872f5b24206",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "ac80738c-ed4f-4a42-be5a-d57895a590a7",
+                    "path": "<Pointer>/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "09166903-1616-4f4d-949b-44a0e6f94a95",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Back",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

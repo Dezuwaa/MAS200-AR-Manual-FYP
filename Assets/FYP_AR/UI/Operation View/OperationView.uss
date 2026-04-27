@@ -1,0 +1,117 @@
+/* --- Base Layout --- */
+.root-container {
+    flex-grow: 1;
+    justify-content: space-between;
+}
+
+.center-container {
+    flex-grow: 1;
+    /* Keeps the center clear for AR passthrough */
+}
+
+/* --- Operation Box --- */
+.operation-box {
+    background-color: rgba(30, 30, 30, 0.95); /* Dark charcoal, slight transparency for AR */
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    padding: 20px;
+    border-top-width: 2px;
+    border-color: #4A4A4A;
+    align-items: stretch;
+}
+
+/* --- Mode Toggle --- */
+.mode-toggle-container {
+    align-items: flex-end; /* Aligns toggle to the right */
+    margin-bottom: 10px;
+}
+
+.mode-toggle-btn {
+    background-color: #2A2A2A;
+    color: #F5F5F5;
+    border-width: 1px;
+    border-color: #555555;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 12px;
+    transition-duration: 0.2s;
+}
+
+.mode-toggle-btn:hover {
+    background-color: #3A3A3A;
+}
+
+/* --- Step Header --- */
+.step-header-container {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.step-text {
+    color: #F5F5F5;
+    font-size: 20px;
+    -unity-font-style: bold;
+    margin: 0 5px;
+}
+
+/* Styling the Unity TextField to look seamless */
+.step-input-field {
+    width: 50px;
+    margin: 0;
+}
+
+.step-input-field > .unity-text-field__input {
+    background-color: #333333;
+    color: #F5F5F5;
+    border-width: 1px;
+    border-color: #555555;
+    border-radius: 6px;
+    font-size: 20px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    padding: 4px;
+}
+
+.step-input-field > .unity-text-field__input:focus {
+    border-color: #F5F5F5;
+}
+
+/* --- Instruction Text --- */
+.instruction-text {
+    color: #D3D3D3; /* Slightly dimmed white for readability */
+    font-size: 16px;
+    white-space: normal; /* Enables text wrapping */
+    -unity-text-align: upper-center;
+    min-height: 80px; /* Reserves space so buttons don't jump around */
+    margin-bottom: 20px;
+}
+
+/* --- Navigation --- */
+.navigation-container {
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.nav-btn {
+    flex-grow: 1;
+    margin: 0 5px;
+    background-color: #2A2A2A;
+    color: #F5F5F5;
+    border-width: 1px;
+    border-color: #555555;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 16px;
+    -unity-font-style: bold;
+    transition-duration: 0.2s;
+}
+
+.nav-btn:hover {
+    background-color: #4A4A4A; /* Lighter shade on hover */
+}
+
+.nav-btn:active {
+    background-color: #1A1A1A; /* Darker shade on click */
+}

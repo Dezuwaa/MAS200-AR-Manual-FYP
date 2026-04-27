@@ -1,0 +1,67 @@
+/* --- Base Menu Layout --- */
+.menu-root {
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+    background-color: #1E1E1E; /* Solid Dark Charcoal background */
+}
+
+/* --- Typography --- */
+.menu-title {
+    color: #F5F5F5; /* Off-white text */
+    font-size: 48px; /* Replaces the inline 60% with a solid pixel size */
+    -unity-font-style: bold;
+    margin-bottom: 60px; /* Space between title and buttons */
+    letter-spacing: 2px;
+}
+
+/* --- Button Container --- */
+.menu-button-container {
+    width: 80%; /* Adapts to screen size */
+    max-width: 400px; /* Prevents buttons from getting too wide on tablets */
+    align-items: center;
+}
+
+/* --- Generic Menu Button Styling --- */
+.menu-btn {
+    width: 100%; /* Fill the container width */
+    height: 65px; /* Tall, easily tappable buttons */
+    margin-bottom: 20px;
+    border-radius: 32px; /* Highly rounded, pill-shaped */
+    font-size: 18px;
+    -unity-font-style: bold;
+    transition-duration: 0.2s;
+}
+
+/* --- Primary Button (Start) --- */
+/* Inverted colors to draw the user's eye immediately */
+.primary-btn {
+    background-color: #F5F5F5; 
+    color: #1E1E1E; 
+    border-width: 0;
+}
+
+.primary-btn:hover {
+    background-color: #FFFFFF;
+}
+
+.primary-btn:active {
+    background-color: #D3D3D3;
+}
+
+/* --- Secondary Button (Exit) --- */
+/* Darker colors so it doesn't compete with the Start button */
+.secondary-btn {
+    background-color: #2A2A2A;
+    color: #F5F5F5;
+    border-width: 2px;
+    border-color: #4A4A4A;
+}
+
+.secondary-btn:hover {
+    background-color: #3A3A3A;
+}
+
+.secondary-btn:active {
+    background-color: #1A1A1A;
+}
