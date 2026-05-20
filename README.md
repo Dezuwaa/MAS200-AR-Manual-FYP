@@ -1,4 +1,4 @@
-[![All Releases](https://img.shields.io/github/downloads/Dezuwaaa/MAS200-AR-Manual-FYP/total.svg)](https://github.com/Dezuwaaa/MAS200-AR-Manual-FYP/releases)
+[![All Releases](https://img.shields.io/github/downloads/Dezuwaaa/MAS200-AR-Manual-FYP/total.svg)](https://github.com/Dezuwaa/MAS200-AR-Manual-FYP/releases/download/v1.0.0/MAS200_AR_Manual_v1.0.apk)
 
 ## 📱 How to Install and Run the AR App
 
