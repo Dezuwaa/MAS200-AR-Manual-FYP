@@ -32,5 +32,3 @@ This folder contains the project's core assets, including:
 - 3D models
 - Materials and textures
 - Application resources
-
-Researchers, students, and examiners may browse these files to review the implementation of the AR manual application.
