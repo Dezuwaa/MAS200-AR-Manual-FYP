@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 791fe5c9a0ebacf4897631d3affe4494, type: 3}
+  m_Name: S_VerificationExtend
+  m_EditorClassIdentifier: Assembly-CSharp::ComponentData
+  componentName: 'Verification Cylinder Extend Sensor '
+  plcName: c1
+  plcAddress: 0.07
+  description: 'Model                       : D-A73CL
+
+    Type                        
+    : Reed Type Magnetic Detector
+
+    Mounting                  : On CD85N12-50A
+    (extended/end position)
+
+    Output Type             : Digital
+
+    PLC Signal               
+    : c1
+
+    PLC Input Address   : 0.07
+
+
+    Detects whether the verification
+    cylinder has completed its full stroke. If activated, the body housing is correctly
+    oriented (facing up), body_ok condition is TRUE. If NOT activated, the body is
+    inverted and must be rejected.'

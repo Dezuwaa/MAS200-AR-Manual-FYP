@@ -12,4 +12,7 @@ public class ComponentData : ScriptableObject
 
     [Tooltip("The PLC output/input address (e.g., 000, 100)")]
     public string plcAddress;
+
+    [TextArea(3, 10)]
+    public string description;
 }

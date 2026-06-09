@@ -5,152 +5,167 @@ using DG.Tweening;
 public class TweenController : MonoBehaviour
 {
     private Sequence currentSequence;
-    private List<Tween> activeInfiniteTweens = new List<Tween>(); // Tracks visual cues (infinite loops)
+    private List<Tween> activeInfiniteTweens = new List<Tween>();
 
-    // Data strcture to hold the original state
     private struct ObjectOriginData
     {
         public Vector3 localPosition;
         public Quaternion localRotation;
         public Vector3 localScale;
+        public bool activeSelf; // store original visibility
     }
 
-    // Dictionary to store original states of objects before tweening, keyed by GameObject
-    private Dictionary<GameObject, ObjectOriginData> originalStates = new Dictionary<GameObject, ObjectOriginData>();
+    private Dictionary<GameObject, ObjectOriginData> originalStates 
+        = new Dictionary<GameObject, ObjectOriginData>();
+
+    // ================================================================
+    //  PUBLIC API
+    // ================================================================
 
     public void StopAllTweens()
     {
-        // Kill the main sequence
         if (currentSequence != null && currentSequence.IsActive())
-        {
             currentSequence.Kill();
-        }
 
-        // Kill any lingering infinite visual cues
         foreach (Tween t in activeInfiniteTweens)
-        {
             if (t != null && t.IsActive()) t.Kill();
-        }
-        activeInfiniteTweens.Clear();
 
+        activeInfiniteTweens.Clear();
         DOTween.KillAll();
     }
 
-    // Method to snap everything back to original state (used when exiting AR view or resetting)
     public void ResetAllToOrigin()
     {
-        StopAllTweens(); // Always stop animations before forcing positions
+        StopAllTweens();
 
         foreach (var kvp in originalStates)
         {
-            if (kvp.Key != null) // Ensure the GameObject hasn't been destroyed
-            {
-                kvp.Key.transform.localPosition = kvp.Value.localPosition;
-                kvp.Key.transform.localRotation = kvp.Value.localRotation;
-                kvp.Key.transform.localScale = kvp.Value.localScale;
-            }
+            if (kvp.Key == null) continue;
+
+            kvp.Key.transform.localPosition = kvp.Value.localPosition;
+            kvp.Key.transform.localRotation = kvp.Value.localRotation;
+            kvp.Key.transform.localScale    = kvp.Value.localScale;
+            kvp.Key.SetActive(kvp.Value.activeSelf); // restore original visibility
         }
     }
 
     public Sequence PlayStepTweens(List<TweenConfig> stepTweens)
     {
         StopAllTweens();
-
         currentSequence = DOTween.Sequence();
 
         if (stepTweens == null || stepTweens.Count == 0)
             return currentSequence;
-        
-        foreach (TweenConfig tween in stepTweens)
+
+        foreach (TweenConfig tweenConfig in stepTweens)
         {
-            Tween t = CreateTween(tween);
-            
-            if (t != null)
+            Tween t = CreateTween(tweenConfig);
+            if (t == null) continue;
+
+            if (tweenConfig.loop && tweenConfig.loopCount == -1)
             {
-                // If it's an infinite loop (visual cue), don't add to sequence
-                if (tween.loop && tween.loopCount == -1)
+                // Infinite loops tracked separately, never added to sequence
+                activeInfiniteTweens.Add(t);
+            }
+            else
+            {
+                switch (tweenConfig.playMode)
                 {
-                    activeInfiniteTweens.Add(t);
+                    case TweenPlayMode.Append:
+                        currentSequence.Append(t);
+                        break;
+                    case TweenPlayMode.Join:
+                    default:
+                        currentSequence.Join(t);
+                        break;
                 }
-                else
-                {
-                    // Finite animation (actuators), add to sequence
-                    currentSequence.Join(t);
-                }
-            }  
+            }
         }
 
         return currentSequence;
     }
 
+    // ================================================================
+    //  INTERNAL
+    // ================================================================
+
     private Tween CreateTween(TweenConfig tweenConfig)
     {
-        Tween currentTween = null;
-        GameObject targetObject = tweenConfig.targetGameObject;
+        GameObject target = tweenConfig.targetGameObject;
+        if (target == null) return null;
 
-        // Cache the original state the first time we see this object
-        if (!originalStates.ContainsKey(targetObject))
+        // Cache original state the first time we see this object
+        if (!originalStates.ContainsKey(target))
         {
-            originalStates[targetObject] = new ObjectOriginData
+            originalStates[target] = new ObjectOriginData
             {
-                localPosition = targetObject.transform.localPosition,
-                localRotation = targetObject.transform.localRotation,
-                localScale = targetObject.transform.localScale
+                localPosition = target.transform.localPosition,
+                localRotation = target.transform.localRotation,
+                localScale    = target.transform.localScale,
+                activeSelf    = target.activeSelf
             };
         }
+
+        // Visibility
+        if (tweenConfig.setActiveOnPlay)
+            target.SetActive(true);
         
-        // 1. STATE FORCING: Snap to start position before tweening if requested
+        if (tweenConfig.setInactiveOnPlay)
+            target.SetActive(false);
+        // Snap to start value if requested
         if (tweenConfig.useStartValue)
         {
             switch (tweenConfig.propertyToTween)
             {
                 case TweenProperty.Position:
-                    targetObject.transform.position = tweenConfig.startValue;
+                    target.transform.position = tweenConfig.startValue;
                     break;
                 case TweenProperty.LocalPosition:
-                    targetObject.transform.localPosition = tweenConfig.startValue;
+                    target.transform.localPosition = tweenConfig.startValue;
                     break;
                 case TweenProperty.Rotation:
-                    targetObject.transform.rotation = Quaternion.Euler(tweenConfig.startValue);
+                    target.transform.rotation = Quaternion.Euler(tweenConfig.startValue);
                     break;
                 case TweenProperty.LocalRotation:
-                    targetObject.transform.localRotation = Quaternion.Euler(tweenConfig.startValue);
+                    target.transform.localRotation = Quaternion.Euler(tweenConfig.startValue);
                     break;
                 case TweenProperty.Scale:
-                    targetObject.transform.localScale = tweenConfig.startValue;
+                    target.transform.localScale = tweenConfig.startValue;
                     break;
             }
         }
 
-        // 2. CREATE TWEEN
+        // Create tween
+        Tween t = null;
         switch (tweenConfig.propertyToTween)
         {
             case TweenProperty.Position:
-                currentTween = targetObject.transform.DOMove(tweenConfig.targetValue, tweenConfig.duration).SetEase(tweenConfig.easeType);
+                t = target.transform.DOMove(tweenConfig.targetValue, tweenConfig.duration)
+                    .SetEase(tweenConfig.easeType);
                 break;
             case TweenProperty.LocalPosition:
-                currentTween = targetObject.transform.DOLocalMove(tweenConfig.targetValue, tweenConfig.duration).SetEase(tweenConfig.easeType);
+                t = target.transform.DOLocalMove(tweenConfig.targetValue, tweenConfig.duration)
+                    .SetEase(tweenConfig.easeType);
                 break;
             case TweenProperty.Rotation:
-                currentTween = targetObject.transform.DORotate(tweenConfig.targetValue, tweenConfig.duration).SetEase(tweenConfig.easeType);
+                t = target.transform.DORotate(tweenConfig.targetValue, tweenConfig.duration)
+                    .SetEase(tweenConfig.easeType);
                 break;
             case TweenProperty.LocalRotation:
-                currentTween = targetObject.transform.DOLocalRotate(tweenConfig.targetValue, tweenConfig.duration).SetEase(tweenConfig.easeType);
+                t = target.transform.DOLocalRotate(tweenConfig.targetValue, tweenConfig.duration)
+                    .SetEase(tweenConfig.easeType);
                 break;
             case TweenProperty.Scale:
-                currentTween = targetObject.transform.DOScale(tweenConfig.targetValue, tweenConfig.duration).SetEase(tweenConfig.easeType);
+                t = target.transform.DOScale(tweenConfig.targetValue, tweenConfig.duration)
+                    .SetEase(tweenConfig.easeType);
                 break;
         }
 
-        // 3. APPLY SETTINGS
-        currentTween?.SetSpeedBased(tweenConfig.isSpeedBased);
-        
-        // Apply Loop settings if enabled
+        t?.SetSpeedBased(tweenConfig.isSpeedBased);
+
         if (tweenConfig.loop)
-        {
-            currentTween?.SetLoops(tweenConfig.loopCount, tweenConfig.loopType);
-        }
-        
-        return currentTween;
+            t?.SetLoops(tweenConfig.loopCount, tweenConfig.loopType);
+
+        return t;
     }
 }

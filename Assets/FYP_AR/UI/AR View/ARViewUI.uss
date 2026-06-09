@@ -1,16 +1,21 @@
-/* --- Base AR View Layout --- */
 .ar-root {
     flex-grow: 1;
+    height: 100%;
     justify-content: space-between;
+    overflow: hidden;
+    margin: 12px;
+    margin-top: 15px;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    margin-left: 15px;
 }
 
 .ar-top-bar {
     align-items: center;
 }
 
-/* Machine Name - Keep white with a subtle text shadow for AR visibility */
 .ar-machine-name {
-    color: #F5F5F5; 
+    color: rgb(245, 245, 245);
     -unity-text-align: middle-center;
     font-size: 20px;
     -unity-font-style: bold;
@@ -18,48 +23,64 @@
 }
 
 .ar-center {
-    flex-grow: 1; /* Pushes the bottom container down */
+    flex-grow: 3;
+    flex-shrink: 1;
 }
 
-/* --- Clear Bottom Container --- */
-.ar-bottom-container {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-end; /* Anchors the vertical columns to the bottom */
-    background-color: transparent; /* Completely clear for camera feed */
-    padding: 4%; /* Responsive padding from screen edges */
-}
-
-/* --- Stacked Button Groups --- */
-.ar-side-btns {
-    flex-direction: column; /* Stacks buttons on top of each other */
+.ar-bottom-wrapper {
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-direction: column;
     justify-content: flex-end;
 }
 
-.ar-left-btns { align-items: flex-start; }
-.ar-right-btns { align-items: flex-end; }
+.ar-bottom-container {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    background-color: transparent;
+    padding: 4%;
+}
 
-/* --- Circular Button Styling (Light Theme for Dark Contrast) --- */
+.ar-side-btns {
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.ar-left-btns {
+    align-items: flex-start;
+}
+
+.ar-right-btns {
+    align-items: flex-end;
+}
+
 .ar-btn {
-    width: 75px; /* Large touch target for mobile/tablets */
+    width: 75px;
     height: 75px;
-    margin-top: 15px; /* Spacing between stacked buttons */
-    border-radius: 50%; /* Forces a perfect circle */
-    background-color: rgba(245, 245, 245, 0.90); /* Off-white, slightly translucent */
-    color: #1E1E1E; /* Dark text on white button */
+    margin-top: 60%;
+    border-radius: 50%;
+    background-color: rgba(245, 245, 245, 0.9);
+    color: rgb(30, 30, 30);
     border-width: 2px;
-    border-color: rgba(30, 30, 30, 0.3); /* Subtle dark rim */
+    border-color: rgba(30, 30, 30, 0.3);
     font-size: 14px;
     -unity-font-style: bold;
     -unity-text-align: middle-center;
-    white-space: normal; /* Allows text to break lines */
+    white-space: normal;
     transition-duration: 0.2s;
+    scale: 1.5 1.5 1.5;
+    -unity-font-definition: url("project://database/Assets/TextMesh%20Pro/Fonts/LiberationSans.ttf?fileID=12800000&guid=e3265ab4bf004d28a9537516768c1c75&type=3#LiberationSans");
 }
 
-.ar-btn:hover { background-color: #FFFFFF; }
-.ar-btn:active { background-color: #D3D3D3; }
+.ar-btn:hover {
+    background-color: rgb(255, 255, 255);
+}
 
-/* Top bar buttons can be slightly smaller circles */
+.ar-btn:active {
+    background-color: rgb(211, 211, 211);
+}
+
 .top-btn {
     width: 50px;
     height: 50px;
@@ -67,7 +88,6 @@
     font-size: 18px;
 }
 
-/* Overlay button with icon */
 .overlay-btn {
     padding: 0;
     justify-content: center;
@@ -80,5 +100,152 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    -unity-background-image-tint-color: #1E1E1E; /* Tints your white cube icon to be dark so it shows up on the white button */
+    -unity-background-image-tint-color: rgb(30, 30, 30);
+}
+
+.ar-detail-panel {
+    flex-shrink: 0;
+    flex-direction: column;
+    background-color: rgba(20, 20, 20, 0.75);
+    border-top-width: 1px;
+    border-top-color: rgba(255, 255, 255, 0.15);
+    overflow: hidden;
+}
+
+.ar-panel-top-bar {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 10px;
+    flex-shrink: 0;
+    border-bottom-width: 1px;
+    border-bottom-color: rgba(255, 255, 255, 0.15);
+    background-color: rgba(0, 0, 0, 0.25);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top: 0;
+    height: auto;
+}
+
+.ar-panel-title {
+    flex-grow: 1;
+    -unity-text-align: middle-center;
+    color: rgb(245, 245, 245);
+    font-size: 28px;
+    -unity-font-style: bold;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.ar-panel-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.12);
+    color: rgb(245, 245, 245);
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.2);
+    font-size: 16px;
+    -unity-text-align: middle-center;
+    flex-shrink: 0;
+    transition-duration: 0.15s;
+    scale: 1.25 1.25 1.25;
+}
+
+.ar-panel-btn:hover {
+    background-color: rgba(255, 255, 255, 0.22);
+}
+
+.ar-panel-btn:active {
+    background-color: rgba(255, 255, 255, 0.35);
+}
+
+.ar-panel-content {
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.ar-panel-scroll {
+    flex-grow: 1;
+    height: 100%;
+}
+
+.ar-detail-container {
+    padding: 10px 14px;
+}
+
+.ar-detail-text {
+    color: rgb(224, 224, 224);
+    font-size: 24px;
+    white-space: normal;
+}
+
+.ar-list-container {
+    padding: 6px 0;
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+}
+
+.ar-list-item {
+    color: rgb(240, 240, 240);
+    font-size: 20px;
+    padding: 10px 16px;
+    border-bottom-width: 1px;
+    background-color: transparent;
+    -unity-text-align: middle-left;
+    transition-duration: 0.15s;
+    display: flex;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-left-width: 1px;
+    border-top-left-radius: 1px;
+    border-top-right-radius: 1px;
+    border-bottom-right-radius: 1px;
+    border-bottom-left-radius: 1px;
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+}
+
+.ar-list-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.ar-list-item:active {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.ar-help-content {
+    flex-direction: column;
+    padding: 10px 14px;
+    flex-shrink: 0;
+}
+
+.ar-help-row {
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 8px 0;
+    border-bottom-width: 1px;
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.ar-help-icon {
+    color: rgb(245, 245, 245);
+    font-size: 18px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    min-width: 60px;
+    flex-shrink: 0;
+}
+
+.ar-help-description {
+    color: rgb(200, 200, 200);
+    font-size: 18px;
+    white-space: normal;
+    flex-grow: 1;
+    flex-shrink: 1;
 }

@@ -24,7 +24,7 @@ public class UIManager : MonoBehaviour
 
 
     // 🔹 3. Current State
-    public UIPage currentPage;
+    public UIPage currentPage = UIPage.MainMenu;
 
     // 🔹 4. Internal Mappings
     private Dictionary<UIPage, UIDocument> pageUI;
@@ -56,12 +56,14 @@ public class UIManager : MonoBehaviour
     {
         EventBus.OnARObjectSpawned += HandleARObjectSpawned;
         EventBus.OnUIPageChangeRequested += ShowPage;
+        EventBus.OnBackButtonClicked += GoBack;
     }
 
     void OnDisable()
     {
         EventBus.OnARObjectSpawned -= HandleARObjectSpawned;
         EventBus.OnUIPageChangeRequested -= ShowPage;
+        EventBus.OnBackButtonClicked -= GoBack;
     }
 
     private void HandleARObjectSpawned(GameObject arObject)

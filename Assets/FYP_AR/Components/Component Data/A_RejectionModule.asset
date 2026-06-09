@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 791fe5c9a0ebacf4897631d3affe4494, type: 3}
   m_Name: A_RejectionModule
   m_EditorClassIdentifier: Assembly-CSharp::ComponentData
-  componentName: Rejection Cylinder
-  plcName: Y4(D+)
-  plcAddress: 003
+  componentName: Body Rejection Cylinder
+  plcName: D+/D-
+  plcAddress: 100.03
+  description: "Model                          : CJPB10-15H6\r\nType                           
+    : Single-Acting Ejection Cylinder\r\nBore Diameter            : \xD810 mm\r\nStroke                        
+    : 15 mm\r\nSolenoid Valve           : 3/2 Way Monostable\nPLC Output Address 
+    : 100.03\r\nPLC Signal (Extend)   : D+\r\nPLC Signal (Retract)  : D- (spring
+    return / de-energise)\r\n\nEjects incorrectly oriented bodies onto the rejection
+    ramp, clearing the station for the next body. Also used to clear the assembly
+    position after a completed turning mechanism assembly cycle."

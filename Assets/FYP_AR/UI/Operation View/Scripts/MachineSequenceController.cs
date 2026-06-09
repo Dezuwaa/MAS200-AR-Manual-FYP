@@ -4,93 +4,130 @@ using UnityEngine;
 public class MachineSequenceController : MonoBehaviour
 {
     [Header("External References")]
-    public TweenController tweenController; // Reference to the TweenController for managing animations
+    public TweenController tweenController;
 
     [Header("Sequence Data")]
-    public List<OperationStep> manualSteps; // List of manual operation steps in the sequence
-    public List<OperationStep> autoSteps; // List of automated operation steps in the sequence
-    public List<OperationStep> currentSequence; // Currently active sequence (manual or automated)
+    public List<OperationStep> manualSteps;
+    public List<OperationStep> autoSteps;
 
-    private int currentStepIndex = 1; // Tracks the current step index in the sequence
-    private OperationStep currentStep => manualSteps.Count > 0 ? manualSteps[currentStepIndex - 1] : null; // Current step data
+    private List<OperationStep> currentSequence;
+    private int currentStepIndex = 1;
+    private List<SelectableObject> activeHighlights = new List<SelectableObject>();
 
-    private List<SelectableObject> activeHighlights = new List<SelectableObject>(); // List of currently highlighted objects
+    public OperationStep CurrentStep => 
+        currentSequence != null && currentSequence.Count > 0 
+            ? currentSequence[currentStepIndex - 1] 
+            : null;
 
-    public int CurrentStepIndex => currentStepIndex; // Public getter for the current step index
-    public int TotalManualSteps => manualSteps.Count; // Total number of steps in the manual sequence
-    public int TotalAutoSteps => autoSteps.Count; // Total number of steps in the automated sequence
-    public OperationStep CurrentStep => currentStep; // Public getter for the current step data
+    public int CurrentStepIndex => currentStepIndex;
+    public int TotalSteps => currentSequence?.Count ?? 0;
 
-    private void OnEnable()
+    void OnEnable()
     {
-        EventBus.OnOperationStepChanged += OnOperationStepChanged; // Subscribe to step change events
-        EventBus.OnUIPageChanged += OnUIPageChanged; // Subscribe to UI page change events
+        EventBus.OnOperationStepChanged       += OnOperationStepChanged;
+        EventBus.OnUIPageChanged              += OnUIPageChanged;
+        EventBus.OnSequenceModeChangeRequested += OnSequenceModeChangeRequested;
     }
 
-    private void OnDisable()
+    void OnDisable()
     {
-        EventBus.OnOperationStepChanged -= OnOperationStepChanged; // Unsubscribe from step change events
-        EventBus.OnUIPageChanged -= OnUIPageChanged; // Unsubscribe from UI page change events
+        EventBus.OnOperationStepChanged       -= OnOperationStepChanged;
+        EventBus.OnUIPageChanged              -= OnUIPageChanged;
+        EventBus.OnSequenceModeChangeRequested -= OnSequenceModeChangeRequested;
     }
 
-    private void OnUIPageChanged(UIManager.UIPage pageName)
+    void Start()
     {
-        if (pageName == UIManager.UIPage.OperationView)
-        return;
+        // Load manual sequence by default
+        LoadSequence(EventBus.SequenceMode.Manual);
+    }
 
-        tweenController.ResetAllToOrigin();
+    // ================================================================
+    //  SEQUENCE LOADING
+    // ================================================================
+
+    private void LoadSequence(EventBus.SequenceMode mode)
+    {
+        currentSequence = mode == EventBus.SequenceMode.Manual ? manualSteps : autoSteps;
+        currentStepIndex = 1;
         ClearActiveHighlights();
+        tweenController.ResetAllToOrigin();
     }
+
+    // ================================================================
+    //  STEP NAVIGATION
+    // ================================================================
 
     public void RequestNextStep()
     {
-        if (currentStepIndex < manualSteps.Count)
-        {
-            currentStepIndex++;
-            UpdateStepIndex(currentStepIndex);
-        }
+        if (currentSequence == null) return;
+        if (currentStepIndex < currentSequence.Count)
+            EventBus.PublishOperationStepChanged(++currentStepIndex);
+        
+        Debug.Log("Requested Next");
     }
 
     public void RequestPreviousStep()
     {
+        if (currentSequence == null) return;
         if (currentStepIndex > 1)
-        {
-            currentStepIndex--;
-            UpdateStepIndex(currentStepIndex);
-        }
+            EventBus.PublishOperationStepChanged(--currentStepIndex);
+        
+        Debug.Log("Requested Previous");
     }
 
-    private void UpdateStepIndex(int stepIndex)
+    public void RequestCurrentStep(int stepIndex)
     {
-        EventBus.PublishOperationStepChanged(stepIndex);
+        if (currentSequence == null) return;
+        if (stepIndex >= 1 && stepIndex <= currentSequence.Count)
+            EventBus.PublishOperationStepChanged(stepIndex);
+        
+        Debug.Log("Requested Current");
     }
+
+    // ================================================================
+    //  EVENT HANDLERS
+    // ================================================================
 
     private void OnOperationStepChanged(int stepIndex)
     {
-        tweenController.PlayStepTweens(currentStep.stepAnimationList); // Play the animations associated with the new step
-        UpdateHighlightObjects(); // Update the highlighted objects for the new step
+        currentStepIndex = stepIndex;
+        tweenController.PlayStepTweens(CurrentStep.stepAnimationList);
+        UpdateHighlightObjects();
     }
+
+    private void OnSequenceModeChangeRequested(EventBus.SequenceMode mode)
+    {
+        LoadSequence(mode);
+    }
+
+    private void OnUIPageChanged(UIManager.UIPage page)
+    {
+        if (page == UIManager.UIPage.OperationView) return;
+        tweenController.ResetAllToOrigin();
+        ClearActiveHighlights();
+    }
+
+    // ================================================================
+    //  HIGHLIGHTS
+    // ================================================================
 
     private void UpdateHighlightObjects()
     {
-        ClearActiveHighlights(); // Clear any currently active highlights
+        ClearActiveHighlights();
+        if (CurrentStep?.highlightObjects == null) return;
 
-        if (currentStep.highlightObjects != null)
+        foreach (var obj in CurrentStep.highlightObjects)
         {
-            foreach (SelectableObject obj in currentStep.highlightObjects)
-            {
-                obj.Select(); // Highlight the object
-                activeHighlights.Add(obj); // Add to the list of active highlights
-            }
+            obj.Select();
+            activeHighlights.Add(obj);
         }
     }
 
     private void ClearActiveHighlights()
     {
-        foreach (SelectableObject obj in activeHighlights)
-        {
-            obj.Deselect(); // Deselect each currently highlighted object
-        }
-        activeHighlights.Clear(); // Clear the list of highlighted objects
+        foreach (var obj in activeHighlights)
+            obj.Deselect();
+        activeHighlights.Clear();
     }
 }

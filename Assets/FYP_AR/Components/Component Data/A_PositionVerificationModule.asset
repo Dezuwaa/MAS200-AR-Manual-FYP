@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 791fe5c9a0ebacf4897631d3affe4494, type: 3}
   m_Name: A_PositionVerificationModule
   m_EditorClassIdentifier: Assembly-CSharp::ComponentData
-  componentName: Body Transfer Cylinder
-  plcName: Y2(B+)
-  plcAddress: 001
+  componentName: Position Verification Cylinder
+  plcName: C+/C-
+  plcAddress: 100.02
+  description: "Model                         : CD85N12-50A\r\nType                          
+    : Double-Acting Cylinder\r\nBore Diameter           : \xD812 mm\r\nStroke                       
+    : 50 mm\r\nFlow Regulators        : Yes\rSolenoid Valve          : 5/2 Way Monostable\r\nPLC
+    Output Address : 100.02\nPLC Signal (Extend)  : C+\r\nPLC Signal (Retract)  :
+    C- (spring/de-energise)\r\n\nAdvances and inserts a cylindrical probe into the
+    body housing to verify correct orientation. If the body is inverted, the probe
+    cannot enter and the cylinder cannot complete its full stroke."

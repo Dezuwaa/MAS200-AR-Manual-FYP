@@ -13,5 +13,11 @@ MonoBehaviour:
   m_Name: A_BodyFeedModule
   m_EditorClassIdentifier: Assembly-CSharp::ComponentData
   componentName: Body Feed Cylinder
-  plcName: Y1(A+)
-  plcAddress: 000
+  plcName: A+/A-
+  plcAddress: 100.00
+  description: "Model                         : CD85N16-100B\r\nType                          
+    : Double-Acting Pusher Cylinder\r\nBore Diameter           : \xD816 mm\r\nStroke                       
+    : 100 mm\r\nFlow Regulators        : Yes\r\nSolenoid Valve          : 5/2 Way
+    Monostable\r\nPLC Output Address : 100.00\nPLC Signal (Extend)  : A+\r\nPLC Signal
+    (Retract) : A- (spring/de-energise)\r\n\nExtracts the bottom body from the gravity-feed
+    magazine stack using a profiled pusher shaped to match the body."

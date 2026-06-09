@@ -1,18 +1,45 @@
 using UnityEngine;
 using UnityEngine.UIElements;
+using System.Collections.Generic;
 
 public class ARViewInteractions : MonoBehaviour
 {
     private UIDocument uiDocument;
     private VisualElement root;
 
-    // Button references
+    // External References
+    private MachineContext currentMachineContext;
+
+    // Top-bar buttons
     private Button backButton;
     private Button helpButton;
     private Button operationManual;
-    private Button indexSearch;
     private Button toggleLabel;
     private Button toggleOverlay;
+    private Button componentDetail;
+    private Button pdfButton;
+
+    // Help Panel
+    private VisualElement helpPanel;
+    private Button helpCloseButton;
+    private bool isHelpPanelVisible = false;
+
+    // Component Detail Panel elements
+    private VisualElement componentDetailPanel;
+    private Button panelListButton;
+    private Button panelCloseButton;
+    private Label panelTitle;
+    private ScrollView componentDetailScroll;
+    private ScrollView componentListScroll;
+    private Label componentDetailText;
+    private VisualElement componentListContainer;
+    private Button componentButtonTemplate;
+
+    // Panel state
+    private bool isPanelVisible = false;
+    private bool isListViewActive = true;
+
+    // ---------------------------------------------------------------
 
     void Awake()
     {
@@ -22,7 +49,6 @@ public class ARViewInteractions : MonoBehaviour
             Debug.LogError("UIDocument component not found on ARViewInteractions GameObject");
             return;
         }
-
         root = uiDocument.rootVisualElement;
     }
 
@@ -30,116 +56,228 @@ public class ARViewInteractions : MonoBehaviour
     {
         if (root == null) return;
 
-        // Get button references
-        backButton = root.Q<Button>("backButton");
-        helpButton = root.Q<Button>("helpButton");
+        // Top-bar buttons
+        backButton      = root.Q<Button>("backButton");
+        helpButton      = root.Q<Button>("helpButton");
         operationManual = root.Q<Button>("operationManual");
-        indexSearch = root.Q<Button>("indexSearch");
-        toggleLabel = root.Q<Button>("toggleLabel");
-        toggleOverlay = root.Q<Button>("toggleOverlay");
+        toggleLabel     = root.Q<Button>("toggleLabel");
+        toggleOverlay   = root.Q<Button>("toggleOverlay");
+        componentDetail = root.Q<Button>("componentDetail");
+        pdfButton       = root.Q<Button>("pdfButton");
 
-        // Register button callbacks
-        if (backButton != null)
-            backButton.clicked += OnBackButtonPressed;
+        // Help panel
+        helpPanel        = root.Q<VisualElement>("helpPanel");
+        helpCloseButton  = root.Q<Button>("helpCloseButton");
 
-        if (operationManual != null)
-            operationManual.clicked += OnOperationManualPressed;
+        // Component detail panel elements
+        componentDetailPanel    = root.Q<VisualElement>("componentDetailPanel");
+        panelListButton         = root.Q<Button>("panelListButton");
+        panelCloseButton        = root.Q<Button>("panelCloseButton");
+        panelTitle              = root.Q<Label>("panelTitle");
+        componentDetailScroll   = root.Q<ScrollView>("componentDetailScroll");
+        componentListScroll     = root.Q<ScrollView>("componentListScroll");
+        componentDetailText     = root.Q<Label>("componentDetailText");
+        componentListContainer  = root.Q<VisualElement>("componentListContainer");
+        componentButtonTemplate = root.Q<Button>("componentButtonTemplate");
 
-        if (indexSearch != null)
-            indexSearch.clicked += OnIndexSearchPressed;
+        // Button callbacks
+        if (backButton != null)       backButton.clicked       += OnBackButtonPressed;
+        if (helpButton != null)       helpButton.clicked       += OnHelpButtonPressed;
+        if (helpCloseButton != null)  helpCloseButton.clicked  += OnHelpCloseButtonPressed;
+        if (operationManual != null)  operationManual.clicked  += OnOperationManualPressed;
+        if (toggleLabel != null)      toggleLabel.clicked      += OnToggleLabelPressed;
+        if (toggleOverlay != null)    toggleOverlay.clicked    += OnToggleOverlayPressed;
+        if (componentDetail != null)  componentDetail.clicked  += OnComponentDetailPressed;
+        if (panelListButton != null)  panelListButton.clicked  += OnPanelListButtonPressed;
+        if (panelCloseButton != null) panelCloseButton.clicked += OnPanelCloseButtonPressed;
+        if (pdfButton != null)        pdfButton.clicked        += OnPdfButtonPressed;
 
-        if (toggleLabel != null)
-            toggleLabel.clicked += OnToggleLabelPressed;
+        // EventBus subscriptions
+        EventBus.OnMachineContextAvailable += OnMachineContextAvailable;
+        EventBus.OnSelectedObjectChanged   += OnSelectedObjectChanged;
 
-        if (toggleOverlay != null)
-            toggleOverlay.clicked += OnToggleOverlayPressed;
+        // Pointer event for closing help panel when clicking outside
+        root.RegisterCallback<PointerDownEvent>(OnRootPointerDown);
 
-        if (helpButton != null)
-            helpButton.clicked += OnHelpButtonPressed;
+        SetPanelVisible(false);
+        SetHelpPanelVisible(false);
     }
 
     void OnDisable()
     {
-        // Unregister button callbacks
-        if (backButton != null)
-            backButton.clicked -= OnBackButtonPressed;
+        if (backButton != null)       backButton.clicked       -= OnBackButtonPressed;
+        if (helpButton != null)       helpButton.clicked       -= OnHelpButtonPressed;
+        if (helpCloseButton != null)  helpCloseButton.clicked  -= OnHelpCloseButtonPressed;
+        if (operationManual != null)  operationManual.clicked  -= OnOperationManualPressed;
+        if (toggleLabel != null)      toggleLabel.clicked      -= OnToggleLabelPressed;
+        if (toggleOverlay != null)    toggleOverlay.clicked    -= OnToggleOverlayPressed;
+        if (componentDetail != null)  componentDetail.clicked  -= OnComponentDetailPressed;
+        if (panelListButton != null)  panelListButton.clicked  -= OnPanelListButtonPressed;
+        if (panelCloseButton != null) panelCloseButton.clicked -= OnPanelCloseButtonPressed;
+        if (pdfButton != null)        pdfButton.clicked        -= OnPdfButtonPressed;
 
-        if (operationManual != null)
-            operationManual.clicked -= OnOperationManualPressed;
+        EventBus.OnMachineContextAvailable -= OnMachineContextAvailable;
+        EventBus.OnSelectedObjectChanged   -= OnSelectedObjectChanged;
 
-        if (indexSearch != null)
-            indexSearch.clicked -= OnIndexSearchPressed;
-
-        if (toggleLabel != null)
-            toggleLabel.clicked -= OnToggleLabelPressed;
-
-        if (toggleOverlay != null)
-            toggleOverlay.clicked -= OnToggleOverlayPressed;
-
-        if (helpButton != null)
-            helpButton.clicked -= OnHelpButtonPressed;
+        if (root != null)
+            root.UnregisterCallback<PointerDownEvent>(OnRootPointerDown);
     }
 
-    /// <summary>
-    /// Handles the back button press - returns to previous UI page
-    /// </summary>
-    private void OnBackButtonPressed()
+    // ================================================================
+    //  EVENTBUS HANDLERS
+    // ================================================================
+
+    private void OnMachineContextAvailable(MachineContext context)
     {
-        EventBus.PublishBackButtonClicked();
-        // Leave back navigation behavior empty here for now.
+        currentMachineContext = context;
+
+        var machineLabel = root.Q<Label>("machineName");
+        if (machineLabel != null)
+            machineLabel.text = context.machineName;
+
+        RebuildComponentListUI(context.GetComponents());
     }
 
-    /// <summary>
-    /// Handles the Operation Manual button press - switches to OperationView UI
-    /// </summary>
-    private void OnOperationManualPressed()
+    private void OnSelectedObjectChanged(GameObject selectedGO)
     {
-        EventBus.PublishUIPageChangeRequested(UIManager.UIPage.OperationView);
+        if (selectedGO == null)
+        {
+            ShowListView();
+            return;
+        }
+
+        if (currentMachineContext == null) return;
+
+        var entry = currentMachineContext.GetComponents()
+            .Find(e => e.componentObject == selectedGO);
+
+        if (entry.data != null)
+        {
+            ShowDetailView(entry);
+            SetPanelVisible(true);
+        }
+        else
+            ShowListView();
     }
 
-    /// <summary>
-    /// Handles the Index Search button press - TODO: implement index search panel
-    /// Future: Pop out a panel with a list of available components
-    /// When tapped, highlights the component in AR view with info panel
-    /// </summary>
-    private void OnIndexSearchPressed()
+    // ================================================================
+    //  HELP PANEL
+    // ================================================================
+
+    private void SetHelpPanelVisible(bool visible)
     {
-        EventBus.PublishIndexSearchButtonClicked();
-        Debug.Log("Index Search button pressed - Feature coming soon");
-        // TODO: Implement index search functionality
+        isHelpPanelVisible = visible;
+        if (helpPanel != null)
+            helpPanel.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
     }
 
-    /// <summary>
-    /// Handles the Toggle Label button press - TODO: implement label visibility toggle
-    /// Future: Toggles visibility of worldspace UI panels showing name, PLC name, PLC address
-    /// of 3D objects in the AR view
-    /// </summary>
+    // ================================================================
+    //  COMPONENT PANEL VISIBILITY & VIEW SWITCHING
+    // ================================================================
+
+    private void SetPanelVisible(bool visible)
+    {
+        isPanelVisible = visible;
+        if (componentDetailPanel != null)
+            componentDetailPanel.style.display = visible
+                ? DisplayStyle.Flex
+                : DisplayStyle.None;
+    }
+
+    private void ShowDetailView(MachineContext.ComponentEntry entry)
+    {
+        isListViewActive = false;
+
+        if (panelTitle != null)
+            panelTitle.text = entry.data.componentName;
+
+        if (componentDetailText != null)
+            componentDetailText.text =
+                $"{entry.data.description}\n";
+
+        if (componentDetailScroll != null)
+            componentDetailScroll.style.display = DisplayStyle.Flex;
+        if (componentListScroll != null)
+            componentListScroll.style.display = DisplayStyle.None;
+    }
+
+    private void ShowListView()
+    {
+        isListViewActive = true;
+
+        if (panelTitle != null)
+            panelTitle.text = "Component List";
+
+        if (componentDetailScroll != null)
+            componentDetailScroll.style.display = DisplayStyle.None;
+        if (componentListScroll != null)
+            componentListScroll.style.display = DisplayStyle.Flex;
+    }
+
+    // ================================================================
+    //  COMPONENT LIST BUILDER
+    // ================================================================
+
+    private void RebuildComponentListUI(List<MachineContext.ComponentEntry> entries)
+    {
+        if (componentListContainer == null || componentButtonTemplate == null) return;
+
+        var toRemove = new List<VisualElement>();
+        foreach (var child in componentListContainer.Children())
+        {
+            if (child != componentButtonTemplate)
+                toRemove.Add(child);
+        }
+        foreach (var child in toRemove)
+            componentListContainer.Remove(child);
+
+        foreach (var entry in entries)
+        {
+            var captured = entry;
+            var btn = new Button(() => EventBus.PublishComponentSelected(captured.componentObject));
+            btn.text = captured.data.componentName;
+            btn.AddToClassList("ar-list-item");
+            componentListContainer.Add(btn);
+        }
+    }
+
+    // ================================================================
+    //  BUTTON HANDLERS
+    // ================================================================
+
+    private void OnBackButtonPressed()      => EventBus.PublishBackButtonClicked();
+    private void OnOperationManualPressed() => EventBus.PublishUIPageChangeRequested(UIManager.UIPage.OperationView);
     private void OnToggleLabelPressed()
     {
-        EventBus.PublishToggleLabelButtonClicked();
-        Debug.Log("Toggle Label button pressed - Feature coming soon");
-        // TODO: Implement label visibility toggle functionality
+        if (currentMachineContext.GetVisibility())
+            EventBus.PublishToggleLabelButtonClicked();
+    }
+    private void OnToggleOverlayPressed()   => EventBus.PublishToggleOverlayButtonClicked();
+
+    private void OnHelpButtonPressed()      => SetHelpPanelVisible(!isHelpPanelVisible);
+    private void OnHelpCloseButtonPressed() => SetHelpPanelVisible(false);
+
+    private void OnComponentDetailPressed() => SetPanelVisible(!isPanelVisible);
+    private void OnPanelCloseButtonPressed() => SetPanelVisible(false);
+
+    private void OnPanelListButtonPressed()
+    {
+        if (!isListViewActive)
+            ShowListView();
     }
 
-    /// <summary>
-    /// Handles the Toggle Overlay button press - TODO: implement overlay controls
-    /// Future: Pop out minimalistic controls for adjusting model opacity and visibility
-    /// (requires tags on models for filtering)
-    /// </summary>
-    private void OnToggleOverlayPressed()
-    {
-        EventBus.PublishToggleOverlayButtonClicked();
-        Debug.Log("Toggle Overlay button pressed - Feature coming soon");
-        // TODO: Implement overlay controls functionality
-    }
+    private void OnPdfButtonPressed()       => EventBus.PublishPdfButtonClicked();
 
-    /// <summary>
-    /// Handles the Help button press - TODO: implement help functionality
-    /// </summary>
-    private void OnHelpButtonPressed()
+    // ================================================================
+    //  POINTER EVENT HANDLER
+    // ================================================================
+
+    private void OnRootPointerDown(PointerDownEvent evt)
     {
-        EventBus.PublishHelpButtonClicked();
-        Debug.Log("Help button pressed");
-        // TODO: Implement help functionality
+        if (!isHelpPanelVisible || helpPanel == null) return;
+
+        var target = evt.target as VisualElement;
+        if (target == null || !helpPanel.Contains(target))
+            SetHelpPanelVisible(false);
     }
 }

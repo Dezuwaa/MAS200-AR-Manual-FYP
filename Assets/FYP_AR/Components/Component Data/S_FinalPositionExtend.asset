@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 791fe5c9a0ebacf4897631d3affe4494, type: 3}
+  m_Name: S_FinalPositionExtend
+  m_EditorClassIdentifier: Assembly-CSharp::ComponentData
+  componentName: Final Position Extend Sensor
+  plcName: b1
+  plcAddress: 0.06
+  description: 'Model                       : D-A93L
+
+    Type                        
+    : Reed Type Magnetic Detector
+
+    Mounting                  : On MDUB25-200DMZ
+    (extended/end position)
+
+    Output Type             : Digital
+
+    PLC Signal               
+    : b1
+
+    PLC Input Address   : 0.06
+
+
+    Detects when the final position pusher
+    cylinder has fully extended, confirming the body has arrived at the assembly
+    position and is ready for component assembly.'

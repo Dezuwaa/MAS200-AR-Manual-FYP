@@ -1,30 +1,61 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/FYP_AR/UI/GlobalStyle.uss"/>
+    <Style src="project://database/Assets/FYP_AR/UI/AR%20View/ARViewUI.uss?fileID=7433441132597879392&amp;guid=8cdba0cdb44e7a84fa053bcef55941b7&amp;type=3#ARViewUI"/>
     <Style src="project://database/Assets/FYP_AR/UI/Operation%20View/OperationView.uss"/>
-    
+
     <ui:VisualElement name="root" class="root-container">
-        
-        <ui:VisualElement name="topBar" style="flex-grow: 0; margin-top: 1%; margin-right: 1%; margin-bottom: 1%; margin-left: 1%; flex-direction: row; justify-content: space-between;">
-            <ui:Button text="⏎" name="backButton"/>
-            <ui:Label text="MAS200 Base Supply" name="machineName" style="color: white; -unity-text-align: middle-center; font-size: 18px;"/>
-            <ui:Button text="?" name="helpButton" style="min-width: 5%;"/>
+
+        <!-- Top Bar -->
+        <ui:VisualElement name="topBar" class="ar-top-bar" style="flex-grow: 0; margin: 2%; flex-direction: row; justify-content: space-between;">
+            <ui:Button text="⏎" name="backButton" class="ar-btn top-btn"/>
+            <ui:Label text="MAS200 Base Supply" name="machineName" class="ar-machine-name"/>
+            <ui:Button text="?" name="helpButton" class="ar-btn top-btn"/>
         </ui:VisualElement>
 
-        <ui:VisualElement name="centerContainer" class="center-container" />
+        <!-- Help Panel -->
+        <ui:VisualElement name="helpPanel" class="ar-detail-panel" style="display: none;">
+            <ui:VisualElement name="helpPanelTopBar" class="ar-panel-top-bar">
+                <ui:Label text="Help &amp; Controls" class="ar-panel-title"/>
+                <ui:Button text="✕" name="helpCloseButton" class="ar-panel-btn"/>
+            </ui:VisualElement>
+            <ui:VisualElement class="ar-help-content">
+                <ui:VisualElement class="ar-help-row">
+                    <ui:Label text="⏎" class="ar-help-icon"/>
+                    <ui:Label text="Back — Returns to the AR View." class="ar-help-description"/>
+                </ui:VisualElement>
+                <ui:VisualElement class="ar-help-row">
+                    <ui:Label text="STEP" class="ar-help-icon"/>
+                    <ui:Label text="Step Field — Type a step number directly to jump to that step." class="ar-help-description"/>
+                </ui:VisualElement>
+                <ui:VisualElement class="ar-help-row">
+                    <ui:Label text="◀ ▶" class="ar-help-icon"/>
+                    <ui:Label text="Prev / Next — Navigate one step at a time through the sequence." class="ar-help-description"/>
+                </ui:VisualElement>
+                <ui:VisualElement class="ar-help-row">
+                    <ui:Label text="⇄" class="ar-help-icon"/>
+                    <ui:Label text="Switch Mode — Toggles between Manual and Auto sequence. Resets to Step 1." class="ar-help-description"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
 
+        <ui:VisualElement name="centerContainer" class="center-container"/>
+
+        <!-- Operation Box -->
         <ui:VisualElement name="operationBox" class="operation-box">
-            
-            <ui:VisualElement class="mode-toggle-container">
-                <ui:Button text="Switch to Auto Sequence" name="sequenceToggleBtn" class="mode-toggle-btn"/>
+
+            <!-- Operation Box Top Bar -->
+            <ui:VisualElement class="op-top-bar">
+                <ui:Button text="Switch to Auto" name="sequenceToggleBtn" class="mode-toggle-btn"/>
+                <ui:Label text="Manual Mode" name="modeTitle" class="op-mode-title"/>
             </ui:VisualElement>
 
             <ui:VisualElement class="step-header-container">
                 <ui:Label text="STEP" class="step-text"/>
-                <ui:TextField name="stepInput" value="1" class="step-input-field" />
+                <ui:TextField name="stepInput" value="1" class="step-input-field"/>
                 <ui:Label text="/ X" name="maxStepCountLabel" class="step-text"/>
             </ui:VisualElement>
 
-            <ui:Label text="[Placeholder] Locate the main power switch on the lower right panel and turn it to the ON position. Ensure the pressure valve is closed before proceeding." name="instructionText" class="instruction-text"/>
+            <ui:Label text="[Placeholder] Instruction text will appear here." name="instructionText" class="instruction-text"/>
 
             <ui:VisualElement class="navigation-container">
                 <ui:Button text="◀ Prev Step" name="prevStepBtn" class="nav-btn"/>

@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 791fe5c9a0ebacf4897631d3affe4494, type: 3}
+  m_Name: S_BodyFeedExtend
+  m_EditorClassIdentifier: Assembly-CSharp::ComponentData
+  componentName: 'Body Feed Cylinder - Extend Position Sensor '
+  plcName: a1
+  plcAddress: 0.05
+  description: 'Model                       : D-C73L
+
+    Type                        
+    : Reed Type Magnetic Detector
+
+    Mounting                  : On CD85N16-100B
+    (extended/end position)
+
+    Output Type             : Digital
+
+    PLC Signal               
+    : a1
+
+    PLC Input Address   : 0.05
+
+
+    Detects when the body feed cylinder
+    has fully extended, confirming the body has been pushed out of the magazine.'

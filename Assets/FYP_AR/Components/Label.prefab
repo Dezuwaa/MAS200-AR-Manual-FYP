@@ -115,7 +115,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: -0}
-  m_SizeDelta: {x: 0.1, y: 0.05}
+  m_SizeDelta: {x: 0.12, y: 0.06}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &192382608632827515
 Canvas:
@@ -192,6 +192,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cad6d04f77cd43f4ebd3e63ce4e34565, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ComponentLabel
+  LabelPanel: {fileID: 0}
   componentNameText: {fileID: 2572503776502018182}
   componentDetailsText: {fileID: 2587095630817628463}
   componentData: {fileID: 0}
@@ -309,7 +310,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 2
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
@@ -329,7 +330,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0.014269955, z: 0.0005392097, w: 0.050272383}
+  m_margin: {x: 0, y: 0.015583143, z: -0.020095441, w: 0.049343027}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -450,7 +451,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 2
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
@@ -470,7 +471,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0.0044817477, y: 0.018325655, z: 0.0061230958, w: 0.0050900057}
+  m_margin: {x: 0.0044817477, y: 0.018325655, z: -0.016329087, w: -0.005178768}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

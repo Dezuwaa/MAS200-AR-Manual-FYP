@@ -12,6 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 791fe5c9a0ebacf4897631d3affe4494, type: 3}
   m_Name: A_MovementModule
   m_EditorClassIdentifier: Assembly-CSharp::ComponentData
-  componentName: Verification Cylinder
-  plcName: Y3(C+)
-  plcAddress: 002
+  componentName: Final Position Pusher Cylinder
+  plcName: B+/B-
+  plcAddress: 100.01
+  description: "Model                        : MDUB25-200DMZ\r\nType                         
+    : Rectangular Double-Acting Pusher Cylinder\r\nBore Diameter           : \xD825
+    mm\r\nStroke                        : 200 mm\r\nFlow Regulators        : Yes\r\nSolenoid
+    Valve          : 5/2 Way Monostable\r\nPLC Output Address : 100.01\nPLC Signal
+    (Extend)  : B+\r\nPLC Signal (Retract)  : B- (spring/de-energise)\r\n\nPushes
+    the verified body to the final assembly position where other components will
+    be assembled. Rectangular cross-section prevents the pusher from rotating during
+    travel."

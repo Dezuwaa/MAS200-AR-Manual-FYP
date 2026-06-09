@@ -17,6 +17,13 @@ Button {
     flex-grow: 0;
 }
 
+#scaleContainer {
+    flex-grow: 1;
+    height: 100%;
+    transform-origin: center center;
+    scale: 1 1;
+}
+
 #backButton {
     min-width: 5%;
     aspect-ratio: 1;
@@ -58,9 +65,3 @@ Button {
     font-size: 20px;
     -unity-text-align: middle-center;
 }
-
-
-
-
-
-
