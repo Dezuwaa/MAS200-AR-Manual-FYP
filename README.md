@@ -19,7 +19,7 @@ To test this Augmented Reality application on your Android device, follow these 
 
 ## 📂 Unity Project Files
 
-The source files used to develop the AR application can be accessed directly from the Unity project directory below:
+The source files used to develop the AR application can be accessed directly from the Unity project directory below or pressing the "View Unity Project" button above:
 
 **Unity Project Folder:**  
 https://github.com/Dezuwaa/MAS200-AR-Manual-FYP/tree/main/Assets/FYP_AR
