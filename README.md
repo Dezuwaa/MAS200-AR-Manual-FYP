@@ -1,4 +1,4 @@
-[![Download APK](https://img.shields.io/badge/Download-APK-green?style=for-the-badge&logo=android)](https://github.com/Dezuwaa/MAS200-AR-Manual-FYP/releases/tag/v1.2.0)
+[![Download APK](https://img.shields.io/badge/Download-APK-green?style=for-the-badge&logo=android)](https://github.com/Dezuwaa/MAS200-AR-Manual-FYP/releases/download/v1.2.0/MAS200_AR_Manual_v1.2.0.apk)
 
 ## 📱 How to Install and Run the AR App
 
